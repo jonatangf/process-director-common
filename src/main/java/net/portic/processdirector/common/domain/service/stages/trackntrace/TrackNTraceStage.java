@@ -1,7 +1,8 @@
-package net.portic.processdirector.common.domain.stages.trackntrace;
+package net.portic.processdirector.common.domain.service.stages.trackntrace;
 
 import lombok.RequiredArgsConstructor;
-import net.portic.processdirector.common.domain.stages.Stage;
+import net.portic.processdirector.common.domain.model.ExecutionContext;
+import net.portic.processdirector.common.domain.service.stages.Stage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,14 +20,12 @@ public class TrackNTraceStage extends Stage {
     }
 
     @Override
-    public void execute() {
+    public ExecutionContext execute(ExecutionContext executionContext) {
         TrackNTracer trackNTracer = tracers.stream()
-                .filter(TrackNTracer::supports)
+                .filter(tracer -> tracer.supports(executionContext))
                 .findFirst()
                 .orElse(genericTrackNTracer);
 
-        trackNTracer.preExecute();
-        trackNTracer.execute();
-        trackNTracer.postExecute();
+        return trackNTracer.execute(executionContext);
     }
 }

@@ -1,8 +1,9 @@
-package net.portic.processdirector.common.domain.stages.prepare;
+package net.portic.processdirector.common.domain.service.stages.prepare;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.portic.processdirector.common.domain.stages.Stage;
+import net.portic.processdirector.common.domain.model.ExecutionContext;
+import net.portic.processdirector.common.domain.service.stages.Stage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +21,13 @@ public class PrepareStage extends Stage {
         return 0;
     }
 
-    public void execute() {
+    public ExecutionContext execute(ExecutionContext executionContext) {
         log.info("Preparing from the service ...");
         Preparer preparer = preparers.stream()
-                .filter(Preparer::supports)
+                .filter(p -> p.supports(executionContext))
                 .findFirst()
                 .orElse(genericPreparer);
 
-        preparer.preExecute();
-        preparer.execute();
-        preparer.postExecute();
+        return preparer.execute(executionContext);
     }
 }
