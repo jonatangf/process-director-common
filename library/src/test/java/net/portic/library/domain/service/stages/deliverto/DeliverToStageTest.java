@@ -47,7 +47,7 @@ class DeliverToStageTest {
 
         List<MessageProcessorAudit> audits = executionContext.getMessageProcessorAudits();
         assertThat(audits).hasSize(1);
-        assertThat(audits.get(0).getSummary()).startsWith("");
+        assertThat(audits.get(0).getSummary()).startsWith("Delivered by Deliverer");
     }
 
     @Test
@@ -60,10 +60,10 @@ class DeliverToStageTest {
 
         assertThat(outputExecutionContext).isEqualTo(inputExecutionContext);
 
-        List<MessageProcessorAudit> audits = inputExecutionContext.getMessageProcessorAudits();
+        List<MessageProcessorAudit> audits = outputExecutionContext.getMessageProcessorAudits();
         assertThat(audits).isEmpty();
 
-        List<MessageProcessorError> errors = inputExecutionContext.getMessageProcessorErrors();
+        List<MessageProcessorError> errors = outputExecutionContext.getMessageProcessorErrors();
         assertThat(errors).hasSize(1);
         assertThat(errors.get(0).getCode()).isEqualTo("DELIVERER_ERROR");
         assertThat(errors.get(0).getDescription()).isEqualTo("Error while preparing");

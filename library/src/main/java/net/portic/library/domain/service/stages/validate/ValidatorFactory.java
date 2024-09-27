@@ -16,7 +16,7 @@ public class ValidatorFactory {
     private final ConfigurationService configurationService;
 
     public Validator getValidator(ExecutionContext executionContext) {
-        String validatorKey = executionContext.getExecution().getMsgType() + "";
+        String validatorKey = executionContext.getExecution().getMsgType() + ".validate";
         String validatorName = configurationService.getPropertyValue(validatorKey);
         return validators.getOrDefault(validatorName, genericValidator);
     }

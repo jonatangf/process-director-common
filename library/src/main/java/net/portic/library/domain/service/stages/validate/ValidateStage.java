@@ -33,7 +33,7 @@ public class ValidateStage extends Stage {
         } catch (Exception e) {
             executionContext.getMessageProcessorErrors().add(MessageProcessorError.builder()
                     .code("VALIDATOR_ERROR")
-                    .description("Error while preparing")
+                    .description("Error while validating")
                     .isFatal(true)
                     .build());
             return executionContext;

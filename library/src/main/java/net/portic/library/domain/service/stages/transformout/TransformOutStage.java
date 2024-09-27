@@ -27,7 +27,7 @@ public class TransformOutStage extends Stage {
         try {
             ExecutionContext outputExecutionContext = outTransformer.execute(executionContext);
             outputExecutionContext.getMessageProcessorAudits().add(MessageProcessorAudit.builder()
-                    .summary("" + outTransformer.getClass().getSimpleName())
+                    .summary("Out transformed by " + outTransformer.getClass().getSimpleName())
                     .build());
             return outputExecutionContext;
         } catch (Exception e) {

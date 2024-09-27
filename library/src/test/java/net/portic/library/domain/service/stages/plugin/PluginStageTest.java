@@ -34,20 +34,17 @@ class PluginStageTest {
     @Test
     void shouldExecuteAndGenerateAudit() {
         when(pluginerFactory.getPluginer(any())).thenReturn(pluginer);
+        when(pluginer.execute(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        ExecutionContext executionContext = ExecutionContext.builder().build();
+        ExecutionContext intputExecutionContext = ExecutionContext.builder().build();
 
-        when(pluginer.execute(any())).thenReturn(executionContext);
+        var outputExecutionContext = pluginStage.execute(intputExecutionContext);
 
-        var result = pluginStage.execute(executionContext);
+        assertThat(outputExecutionContext).isEqualTo(intputExecutionContext);
 
-        assertThat(result).isEqualTo(executionContext);
-
-        verify(pluginer).execute(executionContext);
-
-        List<MessageProcessorAudit> audits = executionContext.getMessageProcessorAudits();
+        List<MessageProcessorAudit> audits = outputExecutionContext.getMessageProcessorAudits();
         assertThat(audits).hasSize(1);
-        assertThat(audits.get(0).getSummary()).startsWith("");
+        assertThat(audits.get(0).getSummary()).startsWith("Plugined by Pluginer");
     }
 
     @Test
@@ -60,10 +57,10 @@ class PluginStageTest {
 
         assertThat(outputExecutionContext).isEqualTo(inputExecutionContext);
 
-        List<MessageProcessorAudit> audits = inputExecutionContext.getMessageProcessorAudits();
+        List<MessageProcessorAudit> audits = outputExecutionContext.getMessageProcessorAudits();
         assertThat(audits).isEmpty();
 
-        List<MessageProcessorError> errors = inputExecutionContext.getMessageProcessorErrors();
+        List<MessageProcessorError> errors = outputExecutionContext.getMessageProcessorErrors();
         assertThat(errors).hasSize(1);
         assertThat(errors.get(0).getCode()).isEqualTo("PLUGINER_ERROR");
         assertThat(errors.get(0).getDescription()).isEqualTo("Error while plugining");

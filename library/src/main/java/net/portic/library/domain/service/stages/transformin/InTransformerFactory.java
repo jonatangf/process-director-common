@@ -16,7 +16,7 @@ public class InTransformerFactory {
     private final ConfigurationService configurationService;
 
     public InTransformer getInTransformer(ExecutionContext executionContext) {
-        String intransformerKey = executionContext.getExecution().getMsgType() + "";
+        String intransformerKey = executionContext.getExecution().getMsgType() + ".inTransform";
         String intransformerName = configurationService.getPropertyValue(intransformerKey);
         return intransformers.getOrDefault(intransformerName, genericInTransformer);
     }

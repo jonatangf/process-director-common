@@ -12,12 +12,12 @@ import java.util.Map;
 public class TrackNTracerFactory {
 
     private final GenericTrackNTracer genericTrackNTracer;
-    private final Map<String, TrackNTracer> preparers;
+    private final Map<String, TrackNTracer> trackNTracers;
     private final ConfigurationService configurationService;
 
     public TrackNTracer getTrackNTracer(ExecutionContext executionContext) {
         String preparerKey = executionContext.getExecution().getMsgType() + ".trackntrace";
         String preparerName = configurationService.getPropertyValue(preparerKey);
-        return preparers.getOrDefault(preparerName, genericTrackNTracer);
+        return trackNTracers.getOrDefault(preparerName, genericTrackNTracer);
     }
 }
