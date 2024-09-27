@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: application
+
+properties:
+  filepath: classpath:message.properties
