@@ -16,7 +16,7 @@ public class OutTransformerFactory {
     private final ConfigurationService configurationService;
 
     public OutTransformer getOutTransformer(ExecutionContext executionContext) {
-        String outTransformerKey = executionContext.getExecution().getMsgType() + "";
+        String outTransformerKey = executionContext.getExecution().getMsgType() + ".outTransform";
         String outTransformerName = configurationService.getPropertyValue(outTransformerKey);
         return outTransformers.getOrDefault(outTransformerName, genericOutTransformer);
     }
